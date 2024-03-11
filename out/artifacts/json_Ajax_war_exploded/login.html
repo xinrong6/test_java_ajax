@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户登录页面</title>
+    <script type="text/javascript">
+        window.onload = function (){
+            var checkButton = document.getElementById("check");
+
+            checkButton.onclick = function (){
+                var xhr = new XMLHttpRequest();
+                var uname = document.getElementById("username").value;
+                // alert(uname);
+                xhr.open("GET","/json_Ajax/CheckUserServlet?uname=" + uname, true);
+                xhr.onreadystatechange = function (){
+                    if(xhr.readyState == 4 && xhr.status == 200){
+                        var responseText = xhr.responseText;
+                        console.log("返回的信息", xhr.responseText);
+                        document.getElementById("div1").innerText = responseText;
+                        if(responseText != ""){
+                            document.getElementById("myans").value = "用户名不可用！";
+                        }else {
+                            document.getElementById("myans").value = "用户名可用！";
+                        }
+                    }
+                }
+                xhr.send();
+            }
+
+
+        }
+    </script>
+</head>
+<body>
+<h1>用户注册</h1>
+<form method="post" action="/json_Ajax/CheckUserServlet">
+    用户名字：<input type="text" id="username"/>&nbsp;
+    <input type="button" id="check" value="验证用户名">
+    <input type="text" id="myans" style="border-width: 0;color:red"/></br></br>
+    用户密码：<input type="password" id="user_password" /></br></br>
+    电子邮件：<input type="text" id="email" /></br></br>
+    <input type="submit" value="用户注册"></br>
+</form>
+<h1>返回的json数据</h1>
+<div id="div1"></div>
+</body>
+</html>
